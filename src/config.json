@@ -1,0 +1,208 @@
+{
+  "name": "MongoDB",
+  "type": "executer",
+  "imgUrl": "logo.png",
+  "execProgram": "node",
+  "main": "app.js",
+  "methods": [
+    {
+      "name": "find",
+      "viewName": "Find documents",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "findOne",
+      "viewName": "Find a document",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "insertOne",
+      "viewName": "Insert a document",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "DOCUMENT",
+          "viewName": "Document",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "insertMany",
+      "viewName": "Insert documents",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "DOCUMENTS",
+          "viewName": "Documents",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "deleteOne",
+      "viewName": "Delete a document",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "deleteMany",
+      "viewName": "Delete documents",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "updateOne",
+      "viewName": "Update a document",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "text"
+        },
+        {
+          "name": "UPDATE",
+          "viewName": "Update",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "updateMany",
+      "viewName": "Update documents",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "text"
+        },
+        {
+          "name": "UPDATE",
+          "viewName": "Update",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "deleteMany",
+      "viewName": "Delete documents",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name": "COLLECTION",
+          "viewName": "collection",
+          "type": "string"
+        },
+        {
+          "name": "QUERY",
+          "viewName": "Query",
+          "type": "text"
+        }
+      ]
+    }
+  ]
+}
