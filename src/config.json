@@ -4,6 +4,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
+  "version": "0.0.1",
   "methods": [
     {
       "name": "find",

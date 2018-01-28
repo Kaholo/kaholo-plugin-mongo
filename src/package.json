@@ -1,5 +1,5 @@
 {
-  "name": "pm-plugin-MongoDB",
+  "name": "pm-plugin-amazon-aws",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
