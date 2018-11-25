@@ -1,2 +1,2 @@
-# pm-plugin-mongo
-MongoDB plugin for Productionmap
+# kaholo-plugin-mongo
+MongoDB plugin for Kaholo
