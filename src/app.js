@@ -1,4 +1,5 @@
 let MongoClient = require("mongodb").MongoClient;
+const child_process = require("child_process")
 
 function _queryHandler(query){
     if (!query)
@@ -212,6 +213,27 @@ function insertMany(action) {
     });
 }
 
+function mongodump (action) {
+    const url = action.params.URL;
+    const params = action.params.OTHER;
+    const path = action.params.OUT;
+    let cmd = `mongodump --uri=${url} -o ${path} ${params}`;
+    return new Promise((resolve, reject) => {
+        console.log("executing:" + cmd)
+        child_process.exec(cmd, (error, stdout, stderr) => {
+            if (error) {
+                return reject(`exec error: ${error}`);
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return reject(`exec error: ${stderr}`);
+            }
+            console.log(stdout)
+            return resolve(stdout);
+        });
+    })
+}
+
 
 module.exports = {
     find: find,
@@ -221,5 +243,6 @@ module.exports = {
     deleteOne: deleteOne,
     deleteMany: deleteMany,
     updateOne: updateOne,
-    updateMany: updateMany
+    updateMany: updateMany,
+    mongodump: mongodump
 };
