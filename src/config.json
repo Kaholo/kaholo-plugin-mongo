@@ -4,7 +4,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "methods": [
     {
       "name": "find",
@@ -202,6 +202,27 @@
           "name": "QUERY",
           "viewName": "Query",
           "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "mongodump",
+      "viewName": "Dump Mongo",
+      "params": [
+        {
+          "name": "URL",
+          "viewName": "DB url",
+          "type": "string"
+        },
+        {
+          "name":"OUT",
+          "viewName": "Output Path",
+          "type":"string"
+        },
+        {
+          "name": "OTHER",
+          "viewName": "Other params",
+          "type": "string"
         }
       ]
     }

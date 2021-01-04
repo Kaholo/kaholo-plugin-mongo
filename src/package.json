@@ -1,7 +1,7 @@
 {
-  "name": "pm-plugin-amazon-aws",
-  "version": "1.0.0",
-  "description": "",
+  "name": "kaholo-plugin-mongodb",
+  "version": "1.0.1",
+  "description": "Kaholo Plugin for MongoDB",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,8 @@
   "author": "Productoinmap (Roy Talyosef)",
   "license": "ISC",
   "dependencies": {
+    "child_process": "^1.0.2",
     "mongodb": "^2.2.33"
-  }
+  },
+  "devDependencies": {}
 }
