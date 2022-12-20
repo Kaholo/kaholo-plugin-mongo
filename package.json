@@ -8,12 +8,12 @@
   },
   "author": "Productoinmap (Roy Talyosef)",
   "license": "ISC",
-  "dependencies": {
-    "mongodb": "^2.2.33"
-  },
   "devDependencies": {
     "eslint": "^8.30.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0"
+  },
+  "dependencies": {
+    "mongodb": "^4.13.0"
   }
 }
