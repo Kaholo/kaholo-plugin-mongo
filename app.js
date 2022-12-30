@@ -1,6 +1,5 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const { bootstrap, parsers } = require("@kaholo/plugin-library");
-const helpers = require("./helpers");
 
 // The Stable API feature (serverApi) requires MongoDB Server 5.0 or later.
 const stableApi = {
@@ -24,7 +23,7 @@ async function find(params) {
   try {
     const databased = await client.db(database);
     const collected = await databased.collection(collection);
-    const parsedQuery = await helpers.parseQuery(query);
+    const parsedQuery = await parsers.object(query);
     const documents = await collected.find(parsedQuery).toArray();
     // you can reach this point even if database and collection do not exist.
     if (documents && documents.length > 0) {
