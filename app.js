@@ -1,260 +1,94 @@
-const { MongoClient } = require("mongodb");
-const childProcess = require("child_process");
+const { MongoClient, ServerApiVersion } = require("mongodb");
+const { bootstrap, parsers } = require("@kaholo/plugin-library");
+const helpers = require("./helpers");
 
-function queryHandler(query) {
-  if (!query) {
-    throw new Error("No query");
-  }
-  if (typeof query === "string") {
-    try {
-      return JSON.parse(query);
-    } catch (e) {
-      throw new Error(`Error parsing query: ${e.message}`);
-    }
-  }
-  return query;
-}
-
-function mongooseCallback(db, resolve, reject) {
-  return (err, data) => {
-    db.close();
-
-    if (err) {
-      reject(err);
-    }
-
-    return resolve(data);
-  };
-}
-
-function execMongo(action) {
-  return new Promise((resolve, reject) => {
-    MongoClient.connect(action.params.URL, (err, db) => {
-      if (err) {
-        reject(new Error("Error connecting to DB"));
-      }
-
-      const collection = db.collection(action.params.COLLECTION);
-      return resolve({
-        collection,
-        db,
-      });
-    });
-  });
-}
-
-function find(action) {
-  return new Promise((resolve, reject) => {
-    let query;
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.find(query).toArray(mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function findOne(action) {
-  return new Promise((resolve, reject) => {
-    let query;
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.findOne(query, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function deleteOne(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.QUERY) {
-      reject(new Error("No query"));
-    }
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-
-    let query;
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.deleteOne(query, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function deleteMany(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-
-    let query;
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.deleteMany(query, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function updateOne(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-    if (!action.params.UPDATE) {
-      reject(new Error("No update value"));
-    }
-
-    let query;
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    let update;
-    try {
-      update = JSON.parse(action.params.UPDATE);
-    } catch (e) {
-      console.error("Error parsing update query: ", e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.updateOne(query, update, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function updateMany(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-
-    let query;
-    try {
-      query = queryHandler(action.params.QUERY);
-    } catch (e) {
-      console.error(e);
-      reject(e);
-    }
-
-    let update;
-    try {
-      update = JSON.parse(action.params.UPDATE);
-    } catch (e) {
-      console.error("Error parsing update query: ", e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.updateMany(query, update, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function insert(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.COLLECTION) {
-      reject(new Error("No collection"));
-    }
-    if (!action.params.DOCUMENT) {
-      reject(new Error("No document"));
-    }
-    let parsedDoc;
-    try {
-      parsedDoc = JSON.parse(action.params.DOCUMENT);
-    } catch (e) {
-      console.error("Error parsing document: ", e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.insertOne(parsedDoc, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function insertMany(action) {
-  return new Promise((resolve, reject) => {
-    if (!action.params.DOCUMENTS) {
-      reject(new Error("No document"));
-    }
-    let parsedDoc;
-    try {
-      parsedDoc = JSON.parse(action.params.DOCUMENTS);
-    } catch (e) {
-      console.error("Error parsing document: ", e);
-      reject(e);
-    }
-
-    execMongo(action).then((res) => {
-      res.collection.insertMany(parsedDoc, mongooseCallback(res.db, resolve, reject));
-    }).catch(reject);
-  });
-}
-
-function mongodump(action) {
-  const url = action.params.URL;
-  const params = action.params.OTHER;
-  const path = action.params.OUT;
-  const cmd = `mongodump --uri=${url} -o ${path} ${params}`;
-  return new Promise((resolve, reject) => {
-    console.info(`executing:${cmd}`);
-    childProcess.exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        reject(new Error(`exec error: ${error}`));
-      }
-      if (stderr) {
-        console.error(`stderr: ${stderr}`);
-        reject(new Error(`exec error: ${stderr}`));
-      }
-      console.info(stdout);
-      return resolve(stdout);
-    });
-  });
-}
-
-module.exports = {
-  find,
-  findOne,
-  insertOne: insert,
-  insertMany,
-  deleteOne,
-  deleteMany,
-  updateOne,
-  updateMany,
-  mongodump,
+// The Stable API feature (serverApi) requires MongoDB Server 5.0 or later.
+const stableApi = {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
 };
+
+async function find(params) {
+  const {
+    uri,
+    database,
+    collection,
+    query,
+  } = params;
+
+  const client = new MongoClient(uri, stableApi);
+
+  try {
+    const databased = await client.db(database);
+    const collected = await databased.collection(collection);
+    const parsedQuery = await helpers.parseQuery(query);
+    const documents = await collected.find(parsedQuery).toArray();
+    // you can reach this point even if database and collection do not exist.
+    if (documents && documents.length > 0) {
+      return documents;
+    }
+    throw new Error("Matching document(s) not found.");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function insertMany(params) {
+  const {
+    uri,
+    database,
+    collection,
+    documents,
+  } = params;
+
+  const client = new MongoClient(uri, stableApi);
+
+  try {
+    const databased = await client.db(database);
+    const collected = await databased.collection(collection);
+    const docJsonArray = parsers.object(documents);
+    console.error(`OBJECT: ${JSON.stringify(docJsonArray)}`);
+    const inserted = await collected.insertMany(docJsonArray);
+    // you can reach this point even if database and collection do not exist.
+    if (inserted && inserted.insertedCount > 0) {
+      return `${inserted.insertedCount} document(s) successfully inserted.`;
+    }
+    throw new Error("No documents inserted.");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+async function deleteMany(params) {
+  const {
+    uri,
+    database,
+    collection,
+    query,
+  } = params;
+
+  const client = new MongoClient(uri, stableApi);
+
+  try {
+    const databased = await client.db(database);
+    const collected = await databased.collection(collection);
+    const parsedQuery = await parsers.object(query);
+    const deleted = await collected.deleteMany(parsedQuery);
+    // you can reach this point even if database and collection do not exist.
+    if (deleted && deleted.deletedCount > 0) {
+      return `${deleted.deletedCount} document(s) successfully deleted.`;
+    }
+    throw new Error("No matching document(s) were found or deleted.");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+module.exports = bootstrap({
+  find,
+  insertMany,
+  deleteMany,
+}, {});
