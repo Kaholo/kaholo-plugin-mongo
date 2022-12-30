@@ -85,6 +85,39 @@
           "description": "Items matching this query will be DELETED."
         }
       ]
+    },
+    {
+      "name": "updateMany",
+      "viewName": "Update Document(s)",
+      "params": [
+        {
+          "name": "uri",
+          "viewName": "Mongo URI",
+          "type": "string"
+        },
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "collection",
+          "viewName": "Collection Name",
+          "type": "string"
+        },
+        {
+          "name": "filter",
+          "viewName": "Filter Query",
+          "type": "string",
+          "description": "Items matching this query will be updated."
+        },
+        {
+          "name": "document",
+          "viewName": "Update Document",
+          "type": "string",
+          "description": "This document will be applied to items matching the filter query."
+        }
+      ]
     }
   ]
 }

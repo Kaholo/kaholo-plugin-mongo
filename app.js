@@ -49,7 +49,6 @@ async function insertMany(params) {
     const databased = await client.db(database);
     const collected = await databased.collection(collection);
     const docJsonArray = parsers.object(documents);
-    console.error(`OBJECT: ${JSON.stringify(docJsonArray)}`);
     const inserted = await collected.insertMany(docJsonArray);
     // you can reach this point even if database and collection do not exist.
     if (inserted && inserted.insertedCount > 0) {
@@ -86,8 +85,36 @@ async function deleteMany(params) {
   }
 }
 
+async function updateMany(params) {
+  const {
+    uri,
+    database,
+    collection,
+    filter,
+    document,
+  } = params;
+
+  const client = new MongoClient(uri, stableApi);
+
+  try {
+    const databased = await client.db(database);
+    const collected = await databased.collection(collection);
+    const parsedFilter = await parsers.object(filter);
+    const parsedDocument = await parsers.object(document);
+    const modified = await collected.updateMany(parsedFilter, parsedDocument);
+    // you can reach this point even if database and collection do not exist.
+    if (modified && modified.modifiedCount > 0) {
+      return `${modified.modifiedCount} document(s) successfully updated.`;
+    }
+    throw new Error("No matching document(s) were found or updated.");
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 module.exports = bootstrap({
   find,
   insertMany,
   deleteMany,
+  updateMany,
 }, {});
