@@ -8,7 +8,7 @@
   "category": "Database",
   "methods": [
     {
-      "name": "find",
+      "name": "findMany",
       "viewName": "Find Document(s)",
       "params": [
         {
@@ -116,6 +116,22 @@
           "viewName": "Update Document",
           "type": "string",
           "description": "This document will be applied to items matching the filter query."
+        }
+      ]
+    },
+    {
+      "name": "dumpDatabase",
+      "viewName": "Dump Database to File",
+      "params": [
+        {
+          "name": "uri",
+          "viewName": "Mongo URI",
+          "type": "string"
+        },
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
         }
       ]
     }

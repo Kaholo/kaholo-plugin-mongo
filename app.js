@@ -10,7 +10,7 @@ const stableApi = {
   },
 };
 
-async function find(params) {
+async function findMany(params) {
   const {
     uri,
     database,
@@ -112,9 +112,20 @@ async function updateMany(params) {
   }
 }
 
+async function dumpDatabase(params) {
+  const {
+    uri,
+    database,
+  } = params;
+
+  throw new Error("method not implemented");
+
+}
+
 module.exports = bootstrap({
-  find,
+  findMany,
   insertMany,
   deleteMany,
   updateMany,
+  dumpDatabase,
 }, {});
