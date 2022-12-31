@@ -1,27 +1,21 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient } = require("mongodb");
 const { bootstrap, parsers } = require("@kaholo/plugin-library");
 const { spawn } = require("child_process");
 const helpers = require("./helpers");
 const { stderr } = require("process");
 
-// The Stable API feature (serverApi) requires MongoDB Server 5.0 or later.
-const stableApi = {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-};
-
 async function findMany(params) {
   const {
     uri,
+    username,
+    password,
     database,
     collection,
     query,
   } = params;
 
-  const client = new MongoClient(uri, stableApi);
+  const newUri = await helpers.consolidateUri(uri, username, password);
+  const client = new MongoClient(newUri);
 
   try {
     const databased = await client.db(database);
@@ -41,12 +35,15 @@ async function findMany(params) {
 async function insertMany(params) {
   const {
     uri,
+    username,
+    password,
     database,
     collection,
     documents,
   } = params;
 
-  const client = new MongoClient(uri, stableApi);
+  const newUri = await helpers.consolidateUri(uri, username, password);
+  const client = new MongoClient(newUri);
 
   try {
     const databased = await client.db(database);
@@ -66,12 +63,15 @@ async function insertMany(params) {
 async function deleteMany(params) {
   const {
     uri,
+    username,
+    password,
     database,
     collection,
     query,
   } = params;
 
-  const client = new MongoClient(uri, stableApi);
+  const newUri = await helpers.consolidateUri(uri, username, password);
+  const client = new MongoClient(newUri);
 
   try {
     const databased = await client.db(database);
@@ -91,13 +91,16 @@ async function deleteMany(params) {
 async function updateMany(params) {
   const {
     uri,
+    username,
+    password,
     database,
     collection,
     filter,
     document,
   } = params;
 
-  const client = new MongoClient(uri, stableApi);
+  const newUri = await helpers.consolidateUri(uri, username, password);
+  const client = new MongoClient(newUri);
 
   try {
     const databased = await client.db(database);
@@ -118,12 +121,14 @@ async function updateMany(params) {
 async function dumpDatabase(params) {
   const {
     uri,
+    username,
+    password,
     database,
     archivePath,
     addParams,
   } = params;
 
-  const uriargs = helpers.parseConnectionStringToShellArguments(uri);
+  const uriargs = await helpers.parseConnectionStringToShellArguments(uri, username, password);
   if (database) {
     uriargs.push("--db", database);
   }
