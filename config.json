@@ -132,6 +132,20 @@
           "name": "database",
           "viewName": "Mongo Database",
           "type": "string"
+        },
+        {
+          "name": "archivePath",
+          "viewName": "Archive File Path",
+          "type": "string",
+          "description": "path and filename for gzipped output archive file",
+          "placeholder": "mongo/backups/dump-20180206.gz"
+        },
+        {
+          "name": "addParams",
+          "viewName": "Additional Parameters",
+          "type": "string",
+          "description": "any additional parameters to add to the mongodump command line",
+          "placeholder": "--forceTableScan --collection=users"
         }
       ]
     }

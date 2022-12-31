@@ -1,5 +1,8 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const { bootstrap, parsers } = require("@kaholo/plugin-library");
+const { spawn } = require("child_process");
+const helpers = require("./helpers");
+const { stderr } = require("process");
 
 // The Stable API feature (serverApi) requires MongoDB Server 5.0 or later.
 const stableApi = {
@@ -116,10 +119,27 @@ async function dumpDatabase(params) {
   const {
     uri,
     database,
+    archivePath,
+    addParams,
   } = params;
 
-  throw new Error("method not implemented");
+  const uriargs = helpers.parseConnectionStringToShellArguments(uri);
+  if (database) {
+    uriargs.push("--db", database);
+  }
+  if (archivePath) {
+    uriargs.push(`--archive=${archivePath}`, "--gzip");
+  }
+  if (addParams) {
+    uriargs.push(addParams);
+  }
 
+  await helpers.mongodumpInstalled();
+
+  const command = `mongodump ${uriargs.join(" ")}`;
+
+  const result = helpers.runCommand(command);
+  return result;
 }
 
 module.exports = bootstrap({
