@@ -14,9 +14,9 @@ async function mongodumpInstalled() {
   }
 }
 
-async function runCommand(command) {
+async function runCommand(command, envVars) {
   try {
-    const result = await exec(command);
+    const result = await exec(command, envVars);
     // stdout is typically null
     // stderr has the details about what mongodump has done
     if (result.stdout) {
@@ -63,15 +63,29 @@ async function parseConnectionStringToShellArguments(uri, username, password) {
   } else {
     if (Reflect.has(uriObject, "user")) {
       args.push("--username", uriObject.user);
-    }  
+    }
   }
 
+  let envVars = {};
+
   if (password) {
-    args.push("--password", `'${password}'`);
+    args.push("--password", "$TMPPASS60FA");
+    envVars = {
+      env: {
+        ...process.env,
+        "TMPPASS60FA": password
+      }
+    };
   } else {
     if (Reflect.has(uriObject, "password")) {
-      args.push("--password", `'${uriObject.password}'`);
-    }  
+      args.push("--password", "$TMPPASS60FA");
+      envVars = {
+        env: {
+          ...process.env,
+          "TMPPASS60FA": uriObject.password
+        }
+      };
+    }
   }
 
   if (Reflect.has(uriObject, "hostname")) {
@@ -89,7 +103,7 @@ async function parseConnectionStringToShellArguments(uri, username, password) {
   } else {
     args.push("--authenticationDatabase", "admin");
   }
-  return args;
+  return { args, envVars };
 }
 
 module.exports = {

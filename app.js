@@ -128,22 +128,21 @@ async function dumpDatabase(params) {
     addParams,
   } = params;
 
-  const uriargs = await helpers.parseConnectionStringToShellArguments(uri, username, password);
+  const { args, envVars } = await helpers.parseConnectionStringToShellArguments(uri, username, password);
   if (database) {
-    uriargs.push("--db", database);
+    args.push("--db", database);
   }
   if (archivePath) {
-    uriargs.push(`--archive=${archivePath}`, "--gzip");
+    args.push(`--archive=${archivePath}`, "--gzip");
   }
   if (addParams) {
-    uriargs.push(addParams);
+    args.push(addParams);
   }
 
   await helpers.mongodumpInstalled();
 
-  const command = `mongodump ${uriargs.join(" ")}`;
-
-  const result = helpers.runCommand(command);
+  const command = `mongodump ${args.join(" ")}`;
+  const result = helpers.runCommand(command, envVars);
   return result;
 }
 
