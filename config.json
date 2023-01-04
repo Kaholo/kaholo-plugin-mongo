@@ -1,231 +1,180 @@
 {
   "name": "MongoDB",
+  "viewName": "MongoDB",
+  "version": "2.0.0",
   "type": "executer",
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "version": "1.0.3",
+  "description": "Kaholo Plugin for MongoDB",
+  "category": [
+    "Database"
+  ],
+  "keywords": [
+    "mongodb",
+    "mongodump",
+    "dump",
+    "findmany",
+    "insertmany",
+    "deletemany",
+    "updatemany",
+    "json",
+    "documents",
+    "database",
+    "collection"
+  ],
+  "auth": {
+    "authId": "mongodbUri",
+    "params": [
+      {
+        "name": "uri",
+        "viewName": "MongoDB URI",
+        "description": "A MongoDB URI of pattern: mongodb://user:password@host:port/defaultauthdb",
+        "type": "string"
+      },
+      {
+        "name": "username",
+        "viewName": "Mongo Username",
+        "description": "Username to authenticate with MongoDB URI, if needed and not included in URI",
+        "type": "string"
+      },
+      {
+        "name": "password",
+        "viewName": "Mongo Password",
+        "description": "Password to authenticate with MongoDB URI, if needed and not included in URI",
+        "type": "vault"
+      }
+    ]
+  },
+  "settings": [
+    {
+      "name": "database",
+      "viewName": "Default Mongo Database",
+      "type": "string"
+    },
+    {
+      "name": "collection",
+      "viewName": "Default Collection Name",
+      "type": "string"
+    }
+  ],
   "methods": [
     {
-      "name": "find",
-      "viewName": "Find documents",
+      "name": "findMany",
+      "viewName": "Find Document(s)",
       "params": [
         {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "database",
+          "viewName": "Mongo Database",
           "type": "string"
         },
         {
-          "name": "COLLECTION",
-          "viewName": "collection",
+          "name": "collection",
+          "viewName": "Collection Name",
           "type": "string"
         },
         {
-          "name": "QUERY",
+          "name": "query",
           "viewName": "Query",
           "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "findOne",
-      "viewName": "Find a document",
-      "params": [
-        {
-          "name": "URL",
-          "viewName": "DB url",
-          "type": "string"
-        },
-        {
-          "name": "COLLECTION",
-          "viewName": "collection",
-          "type": "string"
-        },
-        {
-          "name": "QUERY",
-          "viewName": "Query",
-          "type": "string"
-        }
-      ]
-    },
-    {
-      "name": "insertOne",
-      "viewName": "Insert a document",
-      "params": [
-        {
-          "name": "URL",
-          "viewName": "DB url",
-          "type": "string"
-        },
-        {
-          "name": "COLLECTION",
-          "viewName": "collection",
-          "type": "string"
-        },
-        {
-          "name": "DOCUMENT",
-          "viewName": "Document",
-          "type": "text"
         }
       ]
     },
     {
       "name": "insertMany",
-      "viewName": "Insert documents",
+      "viewName": "Insert Document(s)",
       "params": [
         {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "database",
+          "viewName": "Mongo Database",
           "type": "string"
         },
         {
-          "name": "COLLECTION",
-          "viewName": "collection",
+          "name": "collection",
+          "viewName": "Collection Name",
           "type": "string"
         },
         {
-          "name": "DOCUMENTS",
-          "viewName": "Documents",
-          "type": "text"
-        }
-      ]
-    },
-    {
-      "name": "deleteOne",
-      "viewName": "Delete a document",
-      "params": [
-        {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "documents",
+          "viewName": "Document(s)",
           "type": "string"
-        },
-        {
-          "name": "COLLECTION",
-          "viewName": "collection",
-          "type": "string"
-        },
-        {
-          "name": "QUERY",
-          "viewName": "Query",
-          "type": "text"
         }
       ]
     },
     {
       "name": "deleteMany",
-      "viewName": "Delete documents",
+      "viewName": "Delete Document(s)",
       "params": [
         {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "database",
+          "viewName": "Mongo Database",
           "type": "string"
         },
         {
-          "name": "COLLECTION",
-          "viewName": "collection",
+          "name": "collection",
+          "viewName": "Collection Name",
           "type": "string"
         },
         {
-          "name": "QUERY",
+          "name": "query",
           "viewName": "Query",
-          "type": "text"
-        }
-      ]
-    },
-    {
-      "name": "updateOne",
-      "viewName": "Update a document",
-      "params": [
-        {
-          "name": "URL",
-          "viewName": "DB url",
-          "type": "string"
-        },
-        {
-          "name": "COLLECTION",
-          "viewName": "collection",
-          "type": "string"
-        },
-        {
-          "name": "QUERY",
-          "viewName": "Query",
-          "type": "text"
-        },
-        {
-          "name": "UPDATE",
-          "viewName": "Update",
-          "type": "text"
+          "type": "string",
+          "description": "Items matching this query will be DELETED."
         }
       ]
     },
     {
       "name": "updateMany",
-      "viewName": "Update documents",
+      "viewName": "Update Document(s)",
       "params": [
         {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "database",
+          "viewName": "Mongo Database",
           "type": "string"
         },
         {
-          "name": "COLLECTION",
-          "viewName": "collection",
+          "name": "collection",
+          "viewName": "Collection Name",
           "type": "string"
         },
         {
-          "name": "QUERY",
-          "viewName": "Query",
-          "type": "text"
+          "name": "filter",
+          "viewName": "Filter Query",
+          "type": "string",
+          "description": "Items matching this query will be updated."
         },
         {
-          "name": "UPDATE",
-          "viewName": "Update",
-          "type": "text"
+          "name": "document",
+          "viewName": "Update Document",
+          "type": "string",
+          "description": "This document will be applied to items matching the filter query."
         }
       ]
     },
     {
-      "name": "deleteMany",
-      "viewName": "Delete documents",
+      "name": "dumpDatabase",
+      "viewName": "Dump Database to File",
       "params": [
         {
-          "name": "URL",
-          "viewName": "DB url",
+          "name": "database",
+          "viewName": "Mongo Database",
           "type": "string"
         },
         {
-          "name": "COLLECTION",
-          "viewName": "collection",
-          "type": "string"
+          "name": "archivePath",
+          "viewName": "Archive File Path",
+          "type": "string",
+          "description": "path and filename for gzipped output archive file",
+          "placeholder": "mongo/backups/dump-20180206.gz"
         },
         {
-          "name": "QUERY",
-          "viewName": "Query",
-          "type": "text"
-        }
-      ]
-    },
-    {
-      "name": "mongodump",
-      "viewName": "Dump Mongo",
-      "params": [
-        {
-          "name": "URL",
-          "viewName": "DB url",
-          "type": "string"
-        },
-        {
-          "name": "OUT",
-          "viewName": "Output Path",
-          "type": "string"
-        },
-        {
-          "name": "OTHER",
-          "viewName": "Other params",
-          "type": "string"
+          "name": "addParams",
+          "viewName": "Additional Parameters",
+          "type": "string",
+          "description": "any additional parameters to add to the mongodump command line",
+          "placeholder": "--forceTableScan --collection=users"
         }
       ]
     }
-  ],
-  "category": "DATABASE"
+  ]
 }
