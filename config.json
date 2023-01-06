@@ -6,7 +6,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "description": "Kaholo Plugin for MongoDB",
+  "description": "MongoDB is a NoSQL database program, using JSON-like documents with optional schemas",
   "category": [
     "Database"
   ],
@@ -50,11 +50,13 @@
     {
       "name": "database",
       "viewName": "Default Mongo Database",
+      "description": "The name of the Database to use by default",
       "type": "string"
     },
     {
       "name": "collection",
       "viewName": "Default Collection Name",
+      "description": "The name of the Collection to use by default",
       "type": "string"
     }
   ],
