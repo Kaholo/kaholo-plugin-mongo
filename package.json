@@ -9,13 +9,13 @@
   "author": "Productoinmap (Roy Talyosef)",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.30.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.26.0"
+    "eslint": "8.30.0",
+    "eslint-config-airbnb-base": "15.0.0",
+    "eslint-plugin-import": "2.26.0"
   },
   "dependencies": {
-    "@kaholo/plugin-library": "^2.1.2",
-    "connection-string": "^4.3.6",
-    "mongodb": "^4.13.0"
+    "@kaholo/plugin-library": "2.1.2",
+    "connection-string": "4.3.6",
+    "mongodb": "4.13.0"
   }
 }

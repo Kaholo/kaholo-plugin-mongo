@@ -1,8 +1,6 @@
 const { MongoClient } = require("mongodb");
 const { bootstrap, parsers } = require("@kaholo/plugin-library");
-const { spawn } = require("child_process");
 const helpers = require("./helpers");
-const { stderr } = require("process");
 
 async function findMany(params) {
   const {
@@ -18,8 +16,8 @@ async function findMany(params) {
   const client = new MongoClient(newUri);
 
   try {
-    const databased = await client.db(database);
-    const collected = await databased.collection(collection);
+    const databased = client.db(database);
+    const collected = databased.collection(collection);
     const parsedQuery = await parsers.object(query);
     const documents = await collected.find(parsedQuery).toArray();
     // you can reach this point even if database and collection do not exist.
@@ -46,8 +44,8 @@ async function insertMany(params) {
   const client = new MongoClient(newUri);
 
   try {
-    const databased = await client.db(database);
-    const collected = await databased.collection(collection);
+    const databased = client.db(database);
+    const collected = databased.collection(collection);
     const docJsonArray = parsers.object(documents);
     const inserted = await collected.insertMany(docJsonArray);
     // you can reach this point even if database and collection do not exist.
@@ -74,8 +72,8 @@ async function deleteMany(params) {
   const client = new MongoClient(newUri);
 
   try {
-    const databased = await client.db(database);
-    const collected = await databased.collection(collection);
+    const databased = client.db(database);
+    const collected = databased.collection(collection);
     const parsedQuery = await parsers.object(query);
     const deleted = await collected.deleteMany(parsedQuery);
     // you can reach this point even if database and collection do not exist.
@@ -103,8 +101,8 @@ async function updateMany(params) {
   const client = new MongoClient(newUri);
 
   try {
-    const databased = await client.db(database);
-    const collected = await databased.collection(collection);
+    const databased = client.db(database);
+    const collected = databased.collection(collection);
     const parsedFilter = await parsers.object(filter);
     const parsedDocument = await parsers.object(document);
     const modified = await collected.updateMany(parsedFilter, parsedDocument);
@@ -128,7 +126,10 @@ async function dumpDatabase(params) {
     addParams,
   } = params;
 
-  const { args, envVars } = await helpers.parseConnectionStringToShellArguments(uri, username, password);
+  const {
+    args,
+    envVars,
+  } = await helpers.parseConnectionStringToShellArguments(uri, username, password);
   if (database) {
     args.push("--db", database);
   }
