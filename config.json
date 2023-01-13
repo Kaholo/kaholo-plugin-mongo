@@ -1,0 +1,182 @@
+{
+  "name": "MongoDB",
+  "viewName": "MongoDB",
+  "version": "2.0.0",
+  "type": "executer",
+  "imgUrl": "logo.png",
+  "execProgram": "node",
+  "main": "app.js",
+  "description": "MongoDB is a NoSQL database program, using JSON-like documents with optional schemas",
+  "category": [
+    "Database"
+  ],
+  "keywords": [
+    "mongodb",
+    "mongodump",
+    "dump",
+    "findmany",
+    "insertmany",
+    "deletemany",
+    "updatemany",
+    "json",
+    "documents",
+    "database",
+    "collection"
+  ],
+  "auth": {
+    "authId": "mongodbUri",
+    "params": [
+      {
+        "name": "uri",
+        "viewName": "MongoDB URI",
+        "description": "A MongoDB URI of pattern: mongodb://user:password@host:port/defaultauthdb",
+        "type": "string"
+      },
+      {
+        "name": "username",
+        "viewName": "Mongo Username",
+        "description": "Username to authenticate with MongoDB URI, if needed and not included in URI",
+        "type": "string"
+      },
+      {
+        "name": "password",
+        "viewName": "Mongo Password",
+        "description": "Password to authenticate with MongoDB URI, if needed and not included in URI",
+        "type": "vault"
+      }
+    ]
+  },
+  "settings": [
+    {
+      "name": "database",
+      "viewName": "Default Mongo Database",
+      "description": "The name of the Database to use by default",
+      "type": "string"
+    },
+    {
+      "name": "collection",
+      "viewName": "Default Collection Name",
+      "description": "The name of the Collection to use by default",
+      "type": "string"
+    }
+  ],
+  "methods": [
+    {
+      "name": "findMany",
+      "viewName": "Find Document(s)",
+      "params": [
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "collection",
+          "viewName": "Collection Name",
+          "type": "string"
+        },
+        {
+          "name": "query",
+          "viewName": "Query",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "insertMany",
+      "viewName": "Insert Document(s)",
+      "params": [
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "collection",
+          "viewName": "Collection Name",
+          "type": "string"
+        },
+        {
+          "name": "documents",
+          "viewName": "Document(s)",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteMany",
+      "viewName": "Delete Document(s)",
+      "params": [
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "collection",
+          "viewName": "Collection Name",
+          "type": "string"
+        },
+        {
+          "name": "query",
+          "viewName": "Query",
+          "type": "string",
+          "description": "Items matching this query will be DELETED."
+        }
+      ]
+    },
+    {
+      "name": "updateMany",
+      "viewName": "Update Document(s)",
+      "params": [
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "collection",
+          "viewName": "Collection Name",
+          "type": "string"
+        },
+        {
+          "name": "filter",
+          "viewName": "Filter Query",
+          "type": "string",
+          "description": "Items matching this query will be updated."
+        },
+        {
+          "name": "document",
+          "viewName": "Update Document",
+          "type": "string",
+          "description": "This document will be applied to items matching the filter query."
+        }
+      ]
+    },
+    {
+      "name": "dumpDatabase",
+      "viewName": "Dump Database to File",
+      "params": [
+        {
+          "name": "database",
+          "viewName": "Mongo Database",
+          "type": "string"
+        },
+        {
+          "name": "archivePath",
+          "viewName": "Archive File Path",
+          "type": "string",
+          "description": "path and filename for gzipped output archive file",
+          "placeholder": "mongo/backups/dump-20180206.gz"
+        },
+        {
+          "name": "addParams",
+          "viewName": "Additional Parameters",
+          "type": "string",
+          "description": "any additional parameters to add to the mongodump command line",
+          "placeholder": "--forceTableScan --collection=users"
+        }
+      ]
+    }
+  ]
+}
