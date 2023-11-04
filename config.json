@@ -6,7 +6,7 @@
   "imgUrl": "logo.png",
   "execProgram": "node",
   "main": "app.js",
-  "description": "MongoDB is a NoSQL database program, using JSON-like documents with optional schemas",
+  "description": "MongoDB is a NoSQL database program using JSON-like documents",
   "category": [
     "Database"
   ],
